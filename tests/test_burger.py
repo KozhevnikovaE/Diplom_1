@@ -149,3 +149,16 @@ class TestBurger:
             ingredient = Ingredient(ing_type, ing_name, ing_price)
             burger.add_ingredient(ingredient)
         assert burger.get_price() == expected_total
+
+    def test_get_price_with_mock_ingredients(self):
+        "Проверка ингредиентов с моками"
+        burger = Burger()
+        bun = Bun("Test Bun", 100)
+        burger.set_buns(bun)
+        mock_ingredient1 = Mock(spec=Ingredient)
+        mock_ingredient1.get_price.return_value = 150
+        mock_ingredient2 = Mock(spec=Ingredient)
+        mock_ingredient2.get_price.return_value = 200
+        burger.add_ingredient(mock_ingredient1)
+        burger.add_ingredient(mock_ingredient2)
+        assert burger.get_price() == 550
