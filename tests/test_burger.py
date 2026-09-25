@@ -129,3 +129,23 @@ class TestBurger:
         bun = Bun("White Bun", 200)
         burger.set_buns(bun)
         assert burger.get_price() == 400
+
+
+    @pytest.mark.parametrize(
+        "bun_name,bun_price,ingredients_data,expected_total",
+        [
+            ("black bun", 100, [], 200),
+            ("white bun", 200, [("FILLING", "cutlet", 100)], 500),
+            ("red bun", 300, [("FILLING", "cutlet", 100), ("SAUCE", "hot sauce", 100)], 800),
+            ("black bun", 100, [("FILLING", "dinosaur", 200), ("FILLING", "sausage", 300), ("SAUCE", "chili sauce", 300)], 1000),
+        ]
+    ) 
+    def test_get_price_with_different_combinations(self, bun_name, bun_price, ingredients_data, expected_total):
+        "Проверка цены с различными комбинациями ингредиентов"
+        burger = Burger()
+        bun = Bun(bun_name, bun_price)
+        burger.set_buns(bun)
+        for ing_type, ing_name, ing_price in ingredients_data:
+            ingredient = Ingredient(ing_type, ing_name, ing_price)
+            burger.add_ingredient(ingredient)
+        assert burger.get_price() == expected_total
