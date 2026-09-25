@@ -188,3 +188,42 @@ class TestBurger:
         assert "(==== White Bun ====)" in receipt
         assert receipt.count("(==== White Bun ====") == 2
         assert "Price: 400" in receipt
+
+
+    @pytest.mark.parametrize(
+        "ingredient_type,ingredient_name,ingredient_price",
+        [
+            ("FILLING", "cutlet", 100),
+            ("SAUCE", "sour cream", 200),
+            ("FILLING", "sausage", 300),
+            ("SAUCE", "chili sauce", 300),
+        ]
+    )
+    def test_receipt_with_different_ingredients(self, ingredient_type, ingredient_name, ingredient_price):
+        "Проверка рецепта с различными ингредиентами"
+        burger = Burger()
+        bun = Bun("White Bun", 100)
+        burger.set_buns(bun)
+        ingredient = Ingredient(ingredient_type, ingredient_name, ingredient_price)
+        burger.add_ingredient(ingredient)
+        receipt = burger.get_receipt()
+        expected_type_lower = ingredient_type.lower()
+        assert f"= {expected_type_lower} {ingredient_name} =" in receipt
+        assert f"Price: {100 * 2 + ingredient_price}" in receipt
+
+    def test_get_receipt_format(self):
+        burger = Burger()
+        bun = Bun("black bun", 100)
+        burger.set_buns(bun)
+        ingredient1 = Ingredient("FILLING", "cutlet", 100)
+        ingredient2 = Ingredient("SAUCE", "hot sauce", 100)
+        burger.add_ingredient(ingredient1)
+        burger.add_ingredient(ingredient2)
+        receipt = burger.get_receipt()
+        lines = receipt.split('\n') 
+        assert lines[0] == "(==== black bun ====)"
+        assert "= filling cutlet =" in lines[1]
+        assert "= sauce hot sauce =" in lines[2]
+        assert "(==== black bun ====)" in lines[3]
+        assert "" in lines[4]
+        assert "Price: 400" in lines[5]
