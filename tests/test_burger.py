@@ -78,3 +78,32 @@ class TestBurger:
         burger.add_ingredient(mock_ingredient)
         assert len(burger.ingredients) == 1
         assert burger.ingredients[0] is mock_ingredient
+
+    def test_add_multiple_ingredients(self):
+        "Проверка добавления нескольких ингредиентов"
+        burger = Burger()
+        ingredients = [
+            Ingredient("FILLING", "cutlet", 100),
+            Ingredient("SAUCE", "sour cream", 200),
+            Ingredient("FILLING", "sausage", 300),
+            Ingredient("SAUCE", "chili sauce", 300),
+        ]
+        for ing in ingredients:
+            burger.add_ingredient(ing)       
+        assert len(burger.ingredients) == 4
+        assert burger.ingredients == ingredients
+    
+    def test_remove_ingredient(self):
+        "Проверка удаления ингредиента"
+        burger = Burger()
+        bun = Bun("white bun", 200)
+        burger.set_buns(bun)
+        ingredient1 = Ingredient("FILLING", "dinosaur", 200)
+        ingredient2 = Ingredient("SAUCE", "hot sauce", 100)
+        burger.add_ingredient(ingredient1)
+        burger.add_ingredient(ingredient2)
+        assert len(burger.ingredients) == 2
+        burger.remove_ingredient(0)
+        assert len(burger.ingredients) == 1
+        assert burger.ingredients[0] is ingredient2
+        assert burger.ingredients[0].get_name() == "hot sauce"
