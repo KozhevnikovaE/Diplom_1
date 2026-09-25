@@ -45,3 +45,14 @@ class TestBurger:
         burger.set_buns(bun)
         assert burger.bun.get_name() == bun_name
         assert burger.bun.get_price() == bun_price
+
+    def test_set_buns_replace(self):
+        "Проверка замены булочки"
+        burger = Burger()
+        bun1 = Bun("White Bun", 200)
+        bun2 = Bun("Black Bun", 100)
+        burger.set_buns(bun1)
+        assert burger.bun.get_name() == "White Bun"
+        burger.set_buns(bun2)
+        assert burger.bun.get_name() == "Black Bun"
+        assert burger.bun.get_price() == 100
