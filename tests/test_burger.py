@@ -162,3 +162,29 @@ class TestBurger:
         burger.add_ingredient(mock_ingredient1)
         burger.add_ingredient(mock_ingredient2)
         assert burger.get_price() == 550
+
+    def test_get_receipt(self):
+        "Проверка формирования рецепта"
+        burger = Burger()
+        bun = Bun("Sesame Bun", 50)
+        burger.set_buns(bun)
+        ingredient1 = Ingredient("FILLING", "dinosaur", 200)
+        ingredient2 = Ingredient("SAUCE", "hot sauce", 100)
+        burger.add_ingredient(ingredient1)
+        burger.add_ingredient(ingredient2)
+        receipt = burger.get_receipt()
+        assert ("(==== Sesame Bun ====)") in receipt
+        assert "= filling dinosaur =" in receipt
+        assert "= sauce hot sauce =" in receipt
+        assert "Price: 400" in receipt
+        assert receipt.count("(==== Sesame Bun ====)") == 2
+
+    def test_get_receipt_no_ingredients(self):
+        "Проверка рецепта без ингредиентов"
+        burger = Burger()
+        bun = Bun("White Bun", 200)
+        burger.set_buns(bun)
+        receipt = burger.get_receipt()
+        assert "(==== White Bun ====)" in receipt
+        assert receipt.count("(==== White Bun ====") == 2
+        assert "Price: 400" in receipt
