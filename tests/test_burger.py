@@ -107,3 +107,25 @@ class TestBurger:
         assert len(burger.ingredients) == 1
         assert burger.ingredients[0] is ingredient2
         assert burger.ingredients[0].get_name() == "hot sauce"
+
+    def test_move_ingredient(self):
+        "Проверка перемещения ингредиента"
+        burger = Burger()
+        bun = Bun("white bun", 200)
+        burger.set_buns(bun)
+        ingredient1 = Ingredient("FILLING", "dinosaur", 200)
+        ingredient2 = Ingredient("FILLING", "cutlet", 100)
+        ingredient3 = Ingredient("SAUCE", "hot sauce", 100)
+        burger.add_ingredient(ingredient1)
+        burger.add_ingredient(ingredient2)
+        burger.add_ingredient(ingredient3)
+        assert burger.ingredients == [ingredient1, ingredient2, ingredient3]
+        burger.move_ingredient(0, 2)
+        assert burger.ingredients == [ingredient2, ingredient3, ingredient1]
+
+    def test_get_price_only_bun(self):
+        "Проверка цены только булочек"
+        burger = Burger()
+        bun = Bun("White Bun", 200)
+        burger.set_buns(bun)
+        assert burger.get_price() == 400
